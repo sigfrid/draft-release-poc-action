@@ -25,7 +25,7 @@ class GitHub
   private
 
   def gh_milestone
-    @gh_milestone ||= client.milestones(@github_repository, state: "all")
-                            .detect { |repo_milestone| repo_milestone[:title] == @milestone }
+    @gh_milestone ||= @client.milestones(@github_repository, state: "all")
+                             .detect { |repo_milestone| repo_milestone[:title] == @milestone }
   end
 end
