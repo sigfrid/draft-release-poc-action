@@ -8,5 +8,5 @@ runs:
   using: 'composite'
   steps:
     - run: |
-        ruby action.rb
+        bundle exec ruby action.rb
       shell: bash
