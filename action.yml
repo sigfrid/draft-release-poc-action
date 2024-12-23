@@ -1,0 +1,12 @@
+name: 'Draft a GitHub Release with ...'
+description: '...'
+author: '...'
+branding:
+  icon: filter
+  color: red
+runs:
+  using: 'composite'
+  steps:
+    - run: |
+        bundle exec ruby action.rb
+      shell: bash
