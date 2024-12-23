@@ -14,7 +14,7 @@ jobs:
     - name: Draft release
       uses: sigfrid/draft-release-poc-action
       env:
-        GITHUB_ACCESS_TOKEN: xxxxx
-        GITHUB_REPOSITORY: xxxx/xxxxxx
-        GITHUB_MILESTONE: xxxx
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        GITHUB_MILESTONE: ${{ github.event.client_payload.target_release }}
 ```
