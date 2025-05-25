@@ -27,6 +27,7 @@ class GitHub
   end
 
   def required_checks_pass?
+    p "default branch: #{dafault_branch}"
     @client.check_runs_for_ref(@github_repository, dafault_branch)
            .check_runs.select { |check| required_status_checks.include?(check[:name]) }
            .all? { |check| check[:status] == "completed" && check[:conclusion] == "success" }
