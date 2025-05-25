@@ -57,6 +57,6 @@ class GitHub
   end
 
   def close_milestone
-    client.update_milestone(@github_repository, gh_milestone[:number], { state: 'closed' })
+    @client.update_milestone(@github_repository, gh_milestone[:number], { state: 'closed' })
   end
 end
