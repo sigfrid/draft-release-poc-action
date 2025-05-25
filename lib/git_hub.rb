@@ -34,7 +34,7 @@ class GitHub
 
   def release_milestone
    # create_release
-   # close_milestone
+     close_milestone
    # Documentation.new(@github_repository).publish
     true
   end
@@ -53,5 +53,9 @@ class GitHub
   def dafault_branch
     #"main"
     @client.repository(@github_repository)[:default_branch]
+  end
+
+  def close_milestone
+    client.update_milestone(@github_repository, gh_milestone[:number], { state: 'closed' })
   end
 end
