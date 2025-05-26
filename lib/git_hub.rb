@@ -6,7 +6,7 @@ class GitHub
   def initialize(repo:, milestone:)
     @github_repository = repo
     @milestone = milestone
-    @version = milestone # !!!!
+    #@version = milestone # !!!!
     @client ||= Octokit::Client.new(access_token: ENV.fetch("GITHUB_ACCESS_TOKEN"))
   end
 
@@ -27,14 +27,13 @@ class GitHub
   end
 
   def required_checks_pass?
-    p "default branch: #{dafault_branch}"
     @client.check_runs_for_ref(@github_repository, dafault_branch)
            .check_runs.select { |check| required_status_checks.include?(check[:name]) }
            .all? { |check| check[:status] == "completed" && check[:conclusion] == "success" }
   end
 
   def release_milestone
-   # create_release
+     create_release
      close_milestone
    # Documentation.new(@github_repository).publish
     true
@@ -59,4 +58,17 @@ class GitHub
   def close_milestone
     @client.update_milestone(@github_repository, gh_milestone[:number], { state: 'closed' })
   end
+
+  def create_release
+     `gh release create #{@milestone} --generate-notes`
+
+
+      #body = "This release comes with the following changes:\n"
+      #changelog_issues.each do |issue|
+      #  body << "[#{issue[:number]}](#{issue[:html_url]}) - #{issue[:title]}\n"
+      #end
+      #body << "\n\nRefer to [the milestone page](#{gh_milestone[:html_url]}?closed=1) for more details."
+
+      #@client.create_release(@github_repository, @version, { target_commitish: dafault_branch, name: @milestone, body: body })
+    end
 end
