@@ -72,12 +72,20 @@ class GitHub
   end
 
   def create_release
-      body = "This release comes with the following changes:\n"
+      body = "##What's Changed\n"
       changelog_issues.each do |issue|
-        body += "[#{issue[:number]}](#{issue[:html_url]}) - #{issue[:title]}\n"
+        body += "* #{issue[:title]} by USER in PULL_URL\n"
       end
-      body += "\n\nRefer to [the milestone page](#{gh_milestone[:html_url]}?closed=1) for more details."
+      body += "\n\n** Full Changelog**: https://github.com/#{@github_repository}/commits/#{@milestone}"
+      
 
       @client.create_release(@github_repository, @milestone, { target_commitish: dafault_branch, name: @milestone, body: body })
     end
 end
+
+
+### What's Changed
+#* Build by @sigfrid in https://github.com/inforlife/fortivpn/pull/1
+#* Add arm64 by @sigfrid in https://github.com/inforlife/fortivpn/pull/2
+
+#**Full Changelog**: https://github.com/inforlife/fortivpn/commits/1.0.0
