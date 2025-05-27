@@ -59,6 +59,18 @@ class GitHub
     @client.update_milestone(@github_repository, gh_milestone[:number], { state: 'closed' })
   end
 
+  def gh_milestone
+    @gh_milestone ||= @client.milestones(@github_repository, state: 'all').detect { |repo_milestone| repo_milestone[:title] == @milestone }
+  end
+
+  def milestone_issues
+      @client.issues(@github_repository, milestone: gh_milestone[:number], state: 'all')
+  end
+  
+  def changelog_issues
+    milestone_issues.reject { |issue| !(issue[:labels].map(&:name) & ENV['GITHUB_LABELS_TO_IGNORE'].split('#')).empty? }
+  end
+
   def create_release
       body = "This release comes with the following changes:\n"
       changelog_issues.each do |issue|
