@@ -52,8 +52,6 @@ class GitHub
   end
 
   def dafault_branch
-    #"main"
-    p @client.repository(@github_repository)
     @client.repository(@github_repository)[:default_branch]
   end
 
@@ -62,15 +60,12 @@ class GitHub
   end
 
   def create_release
-     `gh release create #{@milestone} --generate-notes`
+      body = "This release comes with the following changes:\n"
+      changelog_issues.each do |issue|
+        body << "[#{issue[:number]}](#{issue[:html_url]}) - #{issue[:title]}\n"
+      end
+      body << "\n\nRefer to [the milestone page](#{gh_milestone[:html_url]}?closed=1) for more details."
 
-
-      #body = "This release comes with the following changes:\n"
-      #changelog_issues.each do |issue|
-      #  body << "[#{issue[:number]}](#{issue[:html_url]}) - #{issue[:title]}\n"
-      #end
-      #body << "\n\nRefer to [the milestone page](#{gh_milestone[:html_url]}?closed=1) for more details."
-
-      #@client.create_release(@github_repository, @version, { target_commitish: dafault_branch, name: @milestone, body: body })
+      @client.create_release(@github_repository, @version, { target_commitish: dafault_branch, name: @milestone, body: body })
     end
 end
