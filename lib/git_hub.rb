@@ -68,7 +68,7 @@ class GitHub
   end
   
   def changelog_issues
-    milestone_issues.reject { |issue| !(issue[:labels].map(&:name) & ENV['GITHUB_LABELS_TO_IGNORE'].split('#')).empty? }
+    milestone_issues#.reject { |issue| !(issue[:labels].map(&:name) & ENV['GITHUB_LABELS_TO_IGNORE'].split('#')).empty? }
   end
 
   def create_release
