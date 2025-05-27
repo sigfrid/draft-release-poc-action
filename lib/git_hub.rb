@@ -52,6 +52,7 @@ class GitHub
 
   def dafault_branch
     #"main"
+    p @client.repository(@github_repository)
     @client.repository(@github_repository)[:default_branch]
   end
 
