@@ -72,15 +72,15 @@ class GitHub
   end
 
   def create_release
-      body = "## What's Changed\n"
-      changelog_issues.each do |issue|
-        p issue[:pull_request]
-        body += "* #{issue[:title]} by USER in PULL_URL\n"
-      end
-      body += "\n\n**Full Changelog**: https://github.com/#{@github_repository}/commits/#{@milestone}"
+     # body = "## What's Changed\n"
+     # changelog_issues.each do |issue|
+      #  p issue[:pull_request]
+      #  body += "* #{issue[:title]} by USER in PULL_URL\n"
+      #end
+      #body += "\n\n**Full Changelog**: https://github.com/#{@github_repository}/commits/#{@milestone}"
       
 
-      @client.create_release(@github_repository, @milestone, { target_commitish: dafault_branch, name: @milestone, body: body })
+      @client.create_release(@github_repository, @milestone, { target_commitish: dafault_branch, name: @milestone }) #, body: body })
     end
 end
 
