@@ -74,6 +74,7 @@ class GitHub
   def create_release
       body = "This release comes with the following changes:\n"
       changelog_issues.each do |issue|
+        p issue
         body + "[#{issue[:number]}](#{issue[:html_url]}) - #{issue[:title]}\n"
       end
       body + "\n\nRefer to [the milestone page](#{gh_milestone[:html_url]}?closed=1) for more details."
