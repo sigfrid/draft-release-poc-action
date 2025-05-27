@@ -74,10 +74,9 @@ class GitHub
   def create_release
       body = "This release comes with the following changes:\n"
       changelog_issues.each do |issue|
-        p issue
-        body + "[#{issue[:number]}](#{issue[:html_url]}) - #{issue[:title]}\n"
+        body += "[#{issue[:number]}](#{issue[:html_url]}) - #{issue[:title]}\n"
       end
-      body + "\n\nRefer to [the milestone page](#{gh_milestone[:html_url]}?closed=1) for more details."
+      body += "\n\nRefer to [the milestone page](#{gh_milestone[:html_url]}?closed=1) for more details."
 
       @client.create_release(@github_repository, @milestone, { target_commitish: dafault_branch, name: @milestone, body: body })
     end
