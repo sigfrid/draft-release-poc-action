@@ -78,6 +78,6 @@ class GitHub
       end
       body + "\n\nRefer to [the milestone page](#{gh_milestone[:html_url]}?closed=1) for more details."
 
-      @client.create_release(@github_repository, @version, { target_commitish: dafault_branch, name: @milestone, body: body })
+      @client.create_release(@github_repository, @milestone, { target_commitish: dafault_branch, name: @milestone, body: body })
     end
 end
