@@ -8,7 +8,7 @@ github = GitHub.new(repo: GITHUB_REPOSITORY, milestone: GITHUB_MILESTONE)
 
 begin
   feedback = catch(:feedback) do
-    `exit 1`
+    return false
     # THE ACTION RUNS ON THE REPO !!!
     #unless github.exist_repo?
     #  throw :feedback, "I'm sorry, but the repo #{GITHUB_REPOSITORY} does not exist."
