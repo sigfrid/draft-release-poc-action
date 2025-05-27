@@ -74,6 +74,7 @@ class GitHub
   def create_release
       body = "## What's Changed\n"
       changelog_issues.each do |issue|
+        p issue
         body += "* #{issue[:title]} by USER in PULL_URL\n"
       end
       body += "\n\n**Full Changelog**: https://github.com/#{@github_repository}/commits/#{@milestone}"
