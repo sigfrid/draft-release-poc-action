@@ -38,4 +38,5 @@ begin
 
 rescue StandardError => error
   puts "I'm sorry, but #{error.message}."
+  exit 2
 end
