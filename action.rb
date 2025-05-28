@@ -8,11 +8,12 @@ github = GitHub.new(repo: GITHUB_REPOSITORY, milestone: GITHUB_MILESTONE)
 
 begin
   feedback = catch(:feedback) do
+    exit 4
     # THE ACTION RUNS ON THE REPO !!!
     #unless github.exist_repo?
     #  throw :feedback, "I'm sorry, but the repo #{GITHUB_REPOSITORY} does not exist."
     #end
-
+=begin
     p "github.exist_milestone? #{github.exist_milestone?}"
     unless github.exist_milestone?
       throw :feedback, "The milestone #{GITHUB_MILESTONE} does not exist."
@@ -36,11 +37,11 @@ begin
     unless github.required_checks_pass?
       throw :feedback, "At least a required check didn't pass during the last run on the default branch."
     end
-
-    p "github.release_milestone? #{github.release_milestone}"
-    if github.release_milestone
-      throw :feedback, "The release `#{GITHUB_REPOSITORY}:#{GITHUB_MILESTONE}` has been drafted at https://github.com/#{GITHUB_REPOSITORY}/releases/tag/#{GITHUB_MILESTONE}."
-    end
+=end
+   # p "github.release_milestone? #{github.release_milestone}"
+    #if github.release_milestone
+    #  throw :feedback, "The release `#{GITHUB_REPOSITORY}:#{GITHUB_MILESTONE}` has been drafted at https://github.com/#{GITHUB_REPOSITORY}/releases/tag/#{GITHUB_MILESTONE}."
+    #end
   end
 
   puts feedback

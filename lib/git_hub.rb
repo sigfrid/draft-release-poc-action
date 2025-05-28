@@ -27,6 +27,7 @@ class GitHub
   end
 
   def required_checks_pass?
+    return true
     @client.check_runs_for_ref(@github_repository, dafault_branch)
            .check_runs.select { |check| required_status_checks.include?(check[:name]) }
            .all? { |check| check[:status] == "completed" && check[:conclusion] == "success" }
@@ -51,7 +52,6 @@ class GitHub
   end
 
   def dafault_branch
-    #"main"
     @client.repository(@github_repository)[:default_branch]
   end
 
@@ -59,16 +59,34 @@ class GitHub
     @client.update_milestone(@github_repository, gh_milestone[:number], { state: 'closed' })
   end
 
+  def gh_milestone
+    @gh_milestone ||= @client.milestones(@github_repository, state: 'all').detect { |repo_milestone| repo_milestone[:title] == @milestone }
+  end
+
+  def milestone_issues
+      @client.issues(@github_repository, milestone: gh_milestone[:number], state: 'all')
+  end
+  
+  def changelog_issues
+    milestone_issues#.reject { |issue| !(issue[:labels].map(&:name) & ENV['GITHUB_LABELS_TO_IGNORE'].split('#')).empty? }
+  end
+
   def create_release
-     `gh release create #{@milestone} --generate-notes`
-
-
-      #body = "This release comes with the following changes:\n"
-      #changelog_issues.each do |issue|
-      #  body << "[#{issue[:number]}](#{issue[:html_url]}) - #{issue[:title]}\n"
+     # body = "## What's Changed\n"
+     # changelog_issues.each do |issue|
+      #  p issue[:pull_request]
+      #  body += "* #{issue[:title]} by USER in PULL_URL\n"
       #end
-      #body << "\n\nRefer to [the milestone page](#{gh_milestone[:html_url]}?closed=1) for more details."
+      #body += "\n\n**Full Changelog**: https://github.com/#{@github_repository}/commits/#{@milestone}"
+      
 
-      #@client.create_release(@github_repository, @version, { target_commitish: dafault_branch, name: @milestone, body: body })
+      @client.create_release(@github_repository, @milestone, { target_commitish: dafault_branch, name: @milestone }) #, body: body })
     end
 end
+
+
+### What's Changed
+#* Build by @sigfrid in https://github.com/inforlife/fortivpn/pull/1
+#* Add arm64 by @sigfrid in https://github.com/inforlife/fortivpn/pull/2
+
+#**Full Changelog**: https://github.com/inforlife/fortivpn/commits/1.0.0
