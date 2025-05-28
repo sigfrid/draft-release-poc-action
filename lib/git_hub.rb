@@ -3,8 +3,6 @@
 require "octokit"
 
 class GitHub
-  REQUIRED_LABELS = %w[accepted approved confirmed].freeze
-
   def initialize(repo:, milestone:)
     @repository = repo
     @milestone_title = milestone
@@ -21,7 +19,9 @@ class GitHub
 
   def all_issues_labeled?
       milestone_issues.map { |issue| issue[:labels].map { |label| label[:name] } }
-                      .all? { |label_list| (REQUIRED_LABELS & label_list) == REQUIRED_LABELS }
+                      .all? { |label_list| label_list.include?("accepted") &&
+                                          (label_list.include?("approved") ||
+                                           label_list.include?("confirmed")) }
   end
 
   def missing_tag?
