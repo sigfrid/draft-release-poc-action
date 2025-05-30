@@ -46,7 +46,9 @@ class GitHub
   end
 
   def required_status_checks
-    @client.branch_protection(@repository, dafault_branch)[:required_status_checks][:contexts]
+    (Hash(@client.branch_protection(@repository, dafault_branch)).dig(:required_status_checks, :checks) ||
+    @client.get("repos/#{@repository}/rules/branches/#{dafault_branch}")[2].dig(:parameters, :required_status_checks))
+    .map { |check| check[:context] }
   end
 
   def dafault_branch
